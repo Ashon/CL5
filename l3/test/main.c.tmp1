@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_BUFFER 255
+
+int main()
+{
+    char buf[MAX_BUFFER];
+
+    unsigned long long number;
+    int i, j;
+    while(1){
+        printf("How many lines? (1..100)");
+        scanf("%s", buf);
+
+        number = strtoul(buf, NULL, 10);
+
+        if(0 < number && number < 101){
+            number++;
+            for(i = 1; i < number; i++){
+                for(j = 0; j < i; j++)
+                    printf("*");
+                printf("\n");
+            }
+            return 0;
+        } else
+            printf("Invalid input - Range 1..100\n");
+    }
+}
