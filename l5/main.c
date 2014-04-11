@@ -99,20 +99,20 @@ unsigned long long read_number()
  */
 unsigned long long read_mode()
 {
-    printf("# Draw Pattern.\n");
+    printf("\n# Draw Pattern.\n");
     printf(" 1 - lower triangle\n");
     printf(" 2 - upper triangle\n");
     printf(" 3 - diamond\nselect mode > ");
 
     switch(read_number()) {
         case 1:
-            printf("# draw lower triangle\n");
+            printf("\n# draw lower triangle\n");
             return 1;
         case 2:
-            printf("# draw upper triangle\n");
+            printf("\n# draw upper triangle\n");
             return 2;
         case 3:
-            printf("# draw diamond triangle\n");
+            printf("\n# draw diamond triangle\n");
             return 3;
     }
     printf("# invalid mode number..\n");
