@@ -5,25 +5,29 @@
 # c compiler
 CC = gcc
 
-# include & lib path
-INCLUDE = ./
-LIBS = ./
-
 # files
-OBJECT = main.o
-SOURCE = main.c
+SRC = main.c
+OBJ_PATH = ./obj
+OBJ = $(addprefix $(OBJ_PATH)/, $(SRC:.c=.o))
 TARGET = main
-
 
 ## make procedures
 # generate exacute file
-$(TARGET) : $(OBJECT)
-	$(CC) -o $(TARGET) $(OBJECT)
+$(TARGET) : $(OBJ)
+	@echo "# make : generate execute file"
+	$(CC) -o $@ $(OBJ)
 
 # generate object file
-$(OBJECT) : $(SOURCE)
-	$(CC) -c $(SOURCE)
+$(OBJ) : $(OBJ_PATH) $(SRC)
+	@echo "# make : generate obj file"
+	$(CC) -c $(SRC) -o $(OBJ)
+
+# make directory
+$(OBJ_PATH) : $(SRC)
+	@echo "# make : make obj directory"
+	mkdir -p $@
 
 # clean
 clean :
-	rm -rf $(OBJECT) $(TARGET) core
+	@echo "# make : cleanup"
+	rm -rf $(OBJ_PATH) $(TARGET) core
