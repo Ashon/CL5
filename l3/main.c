@@ -18,7 +18,7 @@ void prnt_str(char* str)
 {
     char* cur;
     
-    for(cur = str; *cur != '\0'; cur++)
+    for(cur = str; *cur != 0; cur++)
         printf("%p -> '%c', %d]\n", cur, *cur, *cur);
 }
 
@@ -37,7 +37,7 @@ unsigned long long stroul_strict(char* str)
 {
     char* cur;
 
-    for(cur = str; *cur != '\0'; cur++)
+    for(cur = str; *cur != 0; cur++)
         if(!(47 < *cur && *cur < 58))
             return 0;
 
@@ -61,7 +61,7 @@ int cmp_ws(char c)
     char ws[] = " \t";
     char* cur_ws;
 
-    for(cur_ws = ws; *cur_ws != '\0'; cur_ws++) {
+    for(cur_ws = ws; *cur_ws != 0; cur_ws++) {
         if(c != *cur_ws)
             continue;
         return 0;
@@ -122,59 +122,61 @@ int cmp_ws(char c)
  */
 char* trim_ws(char* str)
 {
-    // 1
     char* cur = str;
     char* anc_start = str;
     char* anc_end = str + strlen(str) - 1;
 
-    // 2
     for(; anc_start < anc_end && !cmp_ws(*anc_start); anc_start++);
     for(; cur < anc_end && !cmp_ws(*anc_end); anc_end--);
 
-    // 3
     for(; anc_start < anc_end + 1; *cur++ = *anc_start++);
 
-    // 4
-    *cur = '\0';
+    *cur = 0;
 
-    // 5
     return str;
 }
 
 /**
- * prevents fgets()'s underflow problem.
+ * prevents some fgets()'s problems.
  * 
  * @param
  *    str - string pointer
- *    len - length of buffer
+ *    size - size of buffer
  *    stream - input stream
  *
  * @return
  *    char* - pointer of str.
  */
-char* fgets_safe(char *str, int len, FILE* stream){
-    fgets(str, len, stream);
-    if(0 < strlen(str))
-        str[strlen(str) - 1] = '\0';
+char* fgets_safe(char *str, int size, FILE* stream)
+{
+    int length;
+
+    fgets(str, size, stream);
+    length = strlen(str);
+
+    /*
+     * before :
+     * str[length - 1] =0;
+     *
+     * after :
+     */
+    if(0 < length && str[length - 1] == '\n')
+        str[length - 1] = 0;
+
     return str;
 }
 
 // main
 int main()
 {
-
-    // char* buf = (char*)calloc(MAX_BUF, sizeof(char));
-    char buf[MAX_BUF];
-
+    char* buf = (char*)calloc(MAX_BUF, sizeof(char));
     unsigned long long num;
     int i, j;
 
     while(1) {
         printf("How many lines? (1..100) ");
-        
-        // fgets_safe(buf, MAX_BUF, stdin);
-        fgets(buf, MAX_BUF, stdin);
-        buf[strlen(buf) - 1] = '\0';
+
+        fgets_safe(buf, MAX_BUF, stdin);
         trim_ws(buf);
 
         num = stroul_strict(buf);
@@ -186,7 +188,7 @@ int main()
                     printf("*");
                 printf("\n");
             }
-            // free(buf);
+            free(buf);
             return 0;
         } else
             printf("Invalid input - Range 1..100\n");
