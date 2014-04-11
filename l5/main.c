@@ -95,11 +95,16 @@ unsigned long long read_number()
 }
 
 /**
- * mode validation.
+ * read mode.
  */
-unsigned long long get_mode(unsigned long long number)
+unsigned long long read_mode()
 {
-    switch(number) {
+    printf("# Draw Pattern.\n");
+    printf(" 1 - lower triangle\n");
+    printf(" 2 - upper triangle\n");
+    printf(" 3 - diamond\nselect mode > ");
+
+    switch(read_number()) {
         case 1:
             printf("# draw lower triangle\n");
             return 1;
@@ -110,6 +115,26 @@ unsigned long long get_mode(unsigned long long number)
             printf("# draw diamond triangle\n");
             return 3;
     }
+    printf("# invalid mode number..\n");
+    return 0;
+}
+
+/*
+ * read lines.
+ */
+unsigned long long read_lines(unsigned long long mode)
+{
+    unsigned long long lines;
+    printf("input lines..(1 to %d%s > ", MAX_LINE, mode == 3 ? ", odd numbers only..)" : ")");
+    lines = read_number();
+
+    if(mode == 3)
+        if((lines & 0x1) != 1)
+            return 0;
+
+    if(0 < lines && lines < MAX_LINE + 1)
+        return lines;
+
     return 0;
 }
 
@@ -137,16 +162,15 @@ int draw(unsigned long long mode)
     if(mode == 0)
         return 1;
 
-    printf("input lines..(1 to 100%s > ", mode == 3 ? ", odd numbers only..)" : ")");
-    lines = read_number();
+    lines = read_lines(mode);
     
-    if(0 < lines && lines < MAX_LINE + 1) {
+    if(lines > 0) {
         switch(mode){
             case 1:
                 for(i = 1; i < lines + 1; i++) {
                     for(j = 0; j < i; j++)
                         printf("*");
-                   printf("\n");
+                    printf("\n");
                 }
             break;
             case 2:
@@ -157,8 +181,6 @@ int draw(unsigned long long mode)
                 }
             break;
             case 3:
-                if((lines & 0x1) != 1)
-                    return 1;
                 for(i = 1; i < (lines + 1) >> 1; i++)
                     draw_dia_part(lines, i);
                 for(i = (lines + 1) >> 1; 0 < i; i--)
@@ -167,34 +189,14 @@ int draw(unsigned long long mode)
         } // end switch
         return 0;
     } // end if
+    printf("# invalid line number..\n");
     return 1;
-}
-
-/*
- * print menu
- */
-void print_menu()
-{
-    printf("# Draw Pattern.\n");
-    printf(" 1 - lower triangle\n");
-    printf(" 2 - upper triangle\n");
-    printf(" 3 - diamond\nselect mode > ");
 }
 
 // main
 int main()
 {
     unsigned long long mode;
-    while(1) {
-        print_menu();
-        if(!(mode = get_mode(read_number()))) {
-            printf("invalid mode..\n");
-            continue;
-        }
-        if(!(draw(mode))){
-            printf("bye.\n");
-            return 0;
-        }
-        printf("invalid line number..\n");
-    }
+    while((draw(read_mode())));
+    return 0;
 }
