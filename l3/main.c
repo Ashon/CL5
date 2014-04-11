@@ -115,7 +115,7 @@ int cmp_ws(char c)
  * 5. return sting[].
  *
  * @param
- *    string - input value.
+ *    str - input value.
  *
  * @return
  *    string - trimmed string.
