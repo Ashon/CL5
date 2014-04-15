@@ -124,17 +124,15 @@ int cmp_ws(char c)
  *
  * @return
  *    string - trimmed string.
- *    0 - str is 0.
+ *    0 - str equals 0.
+ *
+ * @deprecated
  */
 char* trim_ws(char* str)
 {
     char* cur;
     char* anc_start;
     char* anc_end;
-
-    // 0
-    if(str == 0)
-        return 0;
 
     // 1
     cur = str;
@@ -153,6 +151,20 @@ char* trim_ws(char* str)
 
     // 5
     return str;
+}
+
+/**
+ * prevents some trim_ws()'s problems.
+ *
+ * @param
+ *    str - string
+ *
+ * @return
+ *    char* - trimmed string
+ */
+char* trim_ws_safe(char* str)
+{
+
 }
 
 /**
@@ -185,12 +197,29 @@ char* fgets_safe(char *str, int size, FILE* stream)
     return str;
 }
 
+void dbg_trim_ws(){
+    printf("trim_ws(\"\") ..");
+    trim_ws("");
+    printf("clear\n");
+
+    printf("trim_ws(\\0) ..");
+    trim_ws(0);
+    printf("clear\n");
+
+    printf("trim_ws(-1)");
+    trim_ws("asdfasdf");
+    printf("clear\n");
+
+}
+
 // main
 int main()
 {
     char* buf = (char*)calloc(MAX_BUF, sizeof(char));
     unsigned long long num;
     int i, j;
+
+    dbg_trim_ws();
 
     while(1) {
         printf("How many lines? (1..100) ");
