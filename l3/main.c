@@ -33,12 +33,12 @@ void prnt_str(char* str)
  * @return
  *    0 - error
  */
-unsigned long long stroul_strict(char* str)
+unsigned long long strtoul_strict(char* str)
 {
     char* cur;
 
     for(cur = str; *cur != 0; cur++)
-        if(!(47 < *cur && *cur < 58))
+        if(!('0' < *cur && *cur < '9'))
             return 0;
 
     return strtoul(str, NULL, 10);
@@ -74,6 +74,11 @@ int cmp_ws(char c)
  * trims whitespaces in first & end of the string.
  * 
  * scratch..
+ *
+ * 0. if string == 0 then
+ *      return 0
+ *
+ *    else..
  *
  * 1. initialize *cur, anc_start, anc_end.
  *
@@ -119,20 +124,34 @@ int cmp_ws(char c)
  *
  * @return
  *    string - trimmed string.
+ *    0 - str is 0.
  */
 char* trim_ws(char* str)
 {
-    char* cur = str;
-    char* anc_start = str;
-    char* anc_end = str + strlen(str) - 1;
+    char* cur;
+    char* anc_start;
+    char* anc_end;
 
+    // 0
+    if(str == 0)
+        return 0;
+
+    // 1
+    cur = str;
+    anc_start = str;
+    anc_end = str + strlen(str) - 1;
+
+    // 2
     for(; anc_start < anc_end && !cmp_ws(*anc_start); anc_start++);
     for(; cur < anc_end && !cmp_ws(*anc_end); anc_end--);
 
+    // 3
     for(; anc_start < anc_end + 1; *cur++ = *anc_start++);
 
+    // 4
     *cur = 0;
 
+    // 5
     return str;
 }
 
@@ -179,7 +198,7 @@ int main()
         fgets_safe(buf, MAX_BUF, stdin);
         trim_ws(buf);
 
-        num = stroul_strict(buf);
+        num = strtoul_strict(buf);
 
         if(0 < num && num < 101) {
             num++;
