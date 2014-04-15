@@ -17,20 +17,19 @@ TARGET = main
 
 ## make procedures
 # generate exacute file
-$(TARGET) : $(OBJS)
-	@echo "# make : generate execute file"
-	@echo "# obj : $(OBJS)"
+
+$(TARGET) : $(OBJ_PATH) $(OBJS)
+	@echo "# make : generate execute file : OBJS - $(OBJS)"
 	$(CC) -o $@ $(OBJS)
 
 # generate object file
-$(OBJS) : $(SRCS) $(OBJ_PATH)
-	@echo "# make : generate obj file"
-	@echo "# source : $(SRCS)"
+$(OBJS) : $(SRCS)
+	@echo "# make : generate obj file : SRCS - $(SRCS)"
 	$(CC) -c $(addprefix $(SRC_PATH)/, $(notdir $(@:.o=.c))) -o $@
 
 # make directory
-$(OBJ_PATH) : $(SRC_PATH) $(SRC)
-	@echo "# make : make obj directory $(OBJ_PATH)"
+$(OBJ_PATH) : $(SRCS)
+	@echo "# make : make obj directory : OBJ_PATH - $(OBJ_PATH)"
 	mkdir -p $@
 
 # clean
