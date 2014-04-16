@@ -16,7 +16,7 @@ int main()
 {
     ULL mode;
     ULL lines;
-
+    printf("asdf");
     while(1) {
         // read draw mode
         mode = read_mode();

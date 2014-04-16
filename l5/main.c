@@ -144,7 +144,7 @@ unsigned long long read_lines(unsigned long long mode)
 void draw_dia_part(unsigned long long lines, unsigned long long i)
 {
     unsigned long j;
-    for(j = (lines + 1 >> 1) - i; 0 < j; j--)
+    for(j = lines - i; 0 < j; j--)
         printf(" ");
     for(j = 0; j < (i << 1) - 1; j++)
         printf("*");
@@ -181,10 +181,14 @@ int draw(unsigned long long mode)
                 }
             break;
             case 3:
-                for(i = 1; i < (lines + 1) >> 1; i++)
+                for(i = 1; i < (lines + 1) >> 1; i++) {
+                    printf("%d :", (int)((lines + 1)>>1));
                     draw_dia_part(lines, i);
-                for(i = (lines + 1) >> 1; 0 < i; i--)
+                }
+                for(i = (lines + 1) >> 1; 0 < i; i--) {
+                    printf("%d :", (int)((lines + 1)>>1));
                     draw_dia_part(lines, i);
+               }
             break;
         } // end switch
         return 0;
