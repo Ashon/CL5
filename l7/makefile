@@ -5,7 +5,7 @@
 # c compiler
 CC = gcc
 
-# files
+# file path
 SRC_PATH = ./src/
 OBJ_PATH = ./obj/
 
